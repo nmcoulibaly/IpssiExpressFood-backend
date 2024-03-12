@@ -9,4 +9,8 @@ const LivreurSchema = new mongoose.Schema({
         type: Array,
         required: true,
     },
+    position: {
+        type: Number,
+        required: true
+    }
 })
