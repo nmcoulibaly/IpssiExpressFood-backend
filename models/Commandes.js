@@ -21,10 +21,6 @@ const CommandeSchema = new mongoose.Schema({
         type: Float32Array,
         required: true,
     },
-    livreur_attribue: {
-        type: Boolean,
-        required: true,
-    },
     temps_estime_livraison: {
         type: Number,
         required: true,
