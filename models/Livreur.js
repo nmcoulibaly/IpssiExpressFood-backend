@@ -14,3 +14,5 @@ const LivreurSchema = new mongoose.Schema({
         required: true
     }
 })
+
+module.exports = Livreurs = mongoose.model("Livreurs", UserSchema, "livreurs");
