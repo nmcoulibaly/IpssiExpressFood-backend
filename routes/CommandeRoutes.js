@@ -1,8 +1,8 @@
 const CommandeController = require('../controllers/CommandController');
 const routerCommande = require('express').Router();
 
-routerCommande.get('/commande', CommandeController.getCommandes);
+routerCommande.get('', CommandeController.getCommandes);
 
-routerCommande.get('/commande-details/:id', CommandeController.getCommandesById);
+routerCommande.post('/addCommand', CommandeController.addCommande);
 
 module.exports = routerCommande;

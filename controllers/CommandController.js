@@ -1,4 +1,5 @@
 const Commande = require('../models/Commandes');
+const Livreur = require('../models/Livreur');
 
 const getCommandes = (req, res) => {
     Commande.find()
@@ -15,15 +16,39 @@ const getCommandes = (req, res) => {
         });
 }
 
-const getCommandesById = (req, res) => {
-    Commande.find({ "_id": req.params.id })
-        .then(commande => {
-            res.status(200).json(commande);
-            console.log(commande);
-        })
-        .catch(err => {
-            res.status(404).json({ notFound: 'Commande non trouvée ' });
-        });
-}
+const addCommande = async (req, res) => {
+    try {
+        const { client_id, plat_commande, dessert_commande, frais_livraison, total, temps_estime_livraison, statut } = req.body;
 
-module.exports = { getCommandes, getCommandesById, }
+        const livreursDisponibles = await Livreur.find({ statut: 'Disponible' }).sort({ position: 1 });
+
+        if (livreursDisponibles.length === 0) {
+            throw new Error('Aucun livreur disponible');
+        }
+
+        const livreurAttribue = livreursDisponibles.reduce((minLivreur, livreur) => {
+            return livreur.position < minLivreur.position ? livreur : minLivreur;
+        });
+
+        const newCommande = new Commande({
+            client_id,
+            plat_commande,
+            dessert_commande,
+            frais_livraison,
+            total,
+            temps_estime_livraison,
+            statut,
+            livreur_id: livreurAttribue._id
+        });
+
+        await newCommande.save();
+
+        livreurAttribue.statut = 'occupé';
+        await livreurAttribue.save();
+
+        res.status(200).json({ message: 'Commande ajoutée!' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+module.exports = { getCommandes, addCommande }
