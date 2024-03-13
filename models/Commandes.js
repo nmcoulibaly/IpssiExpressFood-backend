@@ -35,3 +35,5 @@ const CommandeSchema = new mongoose.Schema({
     },
 
 })
+
+module.exports = Orders = mongoose.model("Orders", UserSchema, "Orders");

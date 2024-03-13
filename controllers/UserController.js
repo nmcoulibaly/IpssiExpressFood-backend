@@ -6,6 +6,7 @@ const loginUser = (req, res) => {
     Users.findOne({ 'email': email, 'mot_de_passe': mot_de_passe })
         .then(user => {
             if (!user) {
+                console.log("Utilisateur non trouvé");
                 return res.status(404).json({ notFound: 'Utilisateur non trouvé' });
             }
             res.status(200).json(user);
@@ -20,9 +21,10 @@ const loginUser = (req, res) => {
 const registerUser = (req, res) => {
     const nom = req.body.nom;
     const prenom = req.body.prenom;
-    const email = req.body.email;
     const numero = req.body.numero;
+    const email = req.body.email;
     const mot_de_passe = req.body.mot_de_passe;
+    const adress = req.body.adress;
 
     const newUser = new Users({
         nom,
@@ -30,6 +32,7 @@ const registerUser = (req, res) => {
         numero,
         email,
         mot_de_passe,
+        adress,
     })
 
     newUser.save()
@@ -42,6 +45,7 @@ const registerUser = (req, res) => {
             res.status(400).json({ error: 'Erreur client' });
         });
 }
+
 const getUsers = (req, res) => {
     Users.find()
         .then(users => {
@@ -78,4 +82,4 @@ const putUser = (req, res) => {
             res.status(404).json({ notFound: 'Utilisateur non ajouté ' });
         });
 }
-module.exports = { loginUser, registerUser, getUsers, getUserById, putUser, };
+module.exports = { loginUser, registerUser, getUsers, getUserById, putUser };

@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const connect = async () => {
     try {
         mongoose.set('strictQuery', true)
-        await mongoose.connect('mongodb+srv://ibenothmen:Azerty123456789@clusteref.iizzzfs.mongodb.net/')
+        await mongoose.connect('mongodb+srv://ibenothmen:Azerty123456789@clusteref.iizzzfs.mongodb.net/IPSSIEF?retryWrites=true&w=majority')
         console.log("Connexion reussie")
     }
     catch (err) {

@@ -10,3 +10,5 @@ routerUser.post('/user/login', UserController.loginUser);
 routerUser.post('/user/register', UserController.registerUser);
 
 routerUser.put('/put/user/:id', UserController.putUser);
+
+module.exports = routerUser;
