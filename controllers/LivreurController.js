@@ -1,18 +1,23 @@
-const Livreurs = require('../models/Livreur');
-const Commande = require('../models/Commandes');
+const Livreur = require('../models/Livreur');
 
-const registerLivreur = (req, res) => {
-    const nom = req.body.nom;
-    const prenom = req.body.prenom;
-    const email = req.body.email;
-    const numero = req.body.numero;
+const registerLivreur = async (req, res) => {
+    const { nom, prenom, email, numero } = req.body;
 
-    const newLivreur = new Livreurs({
-        nom,
-        prenom,
-        email,
-        numero
-    })
-    newLivreur.save()
-    
-}
+    try {
+        const newLivreur = new Livreur({
+            nom,
+            prenom,
+            email,
+            numero,
+            statut: ["Disponible"]  // Ajout d'un statut par défaut
+        });
+
+        const livreur = await newLivreur.save();
+        res.status(201).json(livreur);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erreur serveur lors de l\'enregistrement du livreur' });
+    }
+};
+
+module.exports = { registerLivreur };
