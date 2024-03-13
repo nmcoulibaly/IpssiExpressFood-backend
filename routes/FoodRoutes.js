@@ -6,10 +6,10 @@ router.post('/', FoodController.createFood);
 
 router.get('/', FoodController.getAllFood);
 
-router.get('/:foodId', FoodController.getFoodById);
+router.get('/get/food/:foodId', FoodController.getFoodById);
 
-router.put('/:foodId', FoodController.updateFood);
+router.put('/get/food/:foodId', FoodController.updateFood);
 
-router.delete('/:foodId', FoodController.deleteFood);
+router.delete('/get/food/:foodId', FoodController.deleteFood);
 
 module.exports = router;

@@ -6,7 +6,7 @@ const LivreurSchema = new mongoose.Schema({
         ref: 'User',
     },
     statut: {
-        type: Array,
+        type: String,
         required: true,
     },
     position: {

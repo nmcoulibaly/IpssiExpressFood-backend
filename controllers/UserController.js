@@ -1,4 +1,6 @@
 const Users = require('../models/User');
+const Commande = require('../models/Commandes');
+const Livreur = require('../models/Livreur');
 
 const loginUser = (req, res) => {
     const email = req.body.email;
@@ -60,6 +62,41 @@ const getUsers = (req, res) => {
             res.status(500).json({ error: err.message });
         });
 }
+
+const getOrderUser = async (req, res) => {
+    const userId = req.params.id;
+
+    try {
+        const user = await Users.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "Utilisateur non trouvé" });
+        }
+
+        const userOrder = await Commande.findOne({ client_id: userId });
+
+        const livreur = await Livreur.findById(userOrder.livreur_id);
+        if (livreur) {
+            const statutLivreur = livreur.statut;
+            if (statutLivreur === "Disponible") {
+                // Mettre à jour le statut de la commande
+                order.statut = "En Cours";
+                await order.save();
+            }
+            if (statutLivreur === "Occupé") {
+                // Mettre à jour le statut de la commande
+                order.statut = "Livré";
+                await order.save();
+            }
+        }
+
+        res.status(200).json(userOrder);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erreur lors de la récupération des commandes de l'utilisateur" });
+    }
+};
+
+
 const getUserById = (req, res) => {
     Users.find({ "_id": req.params.id })
         .then(user => {
@@ -82,4 +119,5 @@ const putUser = (req, res) => {
             res.status(404).json({ notFound: 'Utilisateur non ajouté ' });
         });
 }
-module.exports = { loginUser, registerUser, getUsers, getUserById, putUser };
+
+module.exports = { loginUser, registerUser, getUsers, getUserById, putUser, getOrderUser };

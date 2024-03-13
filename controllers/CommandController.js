@@ -16,39 +16,60 @@ const getCommandes = (req, res) => {
         });
 }
 
-const addCommande = async (req, res) => {
+const attributeCommande = async (req, res) => {
     try {
-        const { client_id, plat_commande, dessert_commande, frais_livraison, total, temps_estime_livraison, statut } = req.body;
+        const { _id } = req.body;
 
+        // Trouver tous les livreurs disponibles et les trier par position croissante
         const livreursDisponibles = await Livreur.find({ statut: 'Disponible' }).sort({ position: 1 });
 
         if (livreursDisponibles.length === 0) {
             throw new Error('Aucun livreur disponible');
         }
 
-        const livreurAttribue = livreursDisponibles.reduce((minLivreur, livreur) => {
-            return livreur.position < minLivreur.position ? livreur : minLivreur;
-        });
+        const livreurAttribue = livreursDisponibles[0];
 
-        const newCommande = new Commande({
-            client_id,
-            plat_commande,
-            dessert_commande,
-            frais_livraison,
-            total,
-            temps_estime_livraison,
-            statut,
-            livreur_id: livreurAttribue._id
-        });
+        const commandeExistante = await Commande.findOne({ client_id: _id });
 
-        await newCommande.save();
+        if (!commandeExistante) {
+            throw new Error('La commande du client n\'a pas été trouvée');
+        }
+
+        commandeExistante.livreur_id = livreurAttribue._id;
+        await commandeExistante.save();
 
         livreurAttribue.statut = 'occupé';
         await livreurAttribue.save();
 
-        res.status(200).json({ message: 'Commande ajoutée!' });
+        res.status(200).json({ message: 'Commande attribuée au livreur!' });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 };
-module.exports = { getCommandes, addCommande }
+
+const addFoodToCommande = async (req, res) => {
+    try {
+        const { client_id, foods_id, temps_estime_livraison } = req.body;
+
+        let commandeExistante = await Commande.findOne({ client_id });
+
+        if (commandeExistante) {
+            commandeExistante.foods_id.push(...foods_id);
+            await commandeExistante.save();
+            res.status(200).json({ message: "Ajoutés à la commande avec succès" });
+        } else {
+            const nouvelleCommande = new Commande({
+                client_id,
+                foods_id,
+                temps_estime_livraison,
+            });
+            await nouvelleCommande.save();
+            res.status(201).json({ message: "Nouvelle commande créée avec succès" });
+        }
+    } catch (error) {
+        console.error("Erreur lors de l'ajout des aliments à la commande :", error);
+        res.status(500).json({ message: "Une erreur est survenue lors de l'ajout des aliments à la commande" });
+    }
+};
+
+module.exports = { getCommandes, addFoodToCommande, attributeCommande }

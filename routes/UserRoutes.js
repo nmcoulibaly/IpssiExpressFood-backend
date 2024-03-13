@@ -11,4 +11,6 @@ routerUser.post('/user/register', UserController.registerUser);
 
 routerUser.put('/put/user/:id', UserController.putUser);
 
+routerUser.get('/user/get/order/:id', UserController.getOrderUser);
+
 module.exports = routerUser;

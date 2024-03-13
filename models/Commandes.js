@@ -5,29 +5,17 @@ const CommandeSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Client'
     },
-    plats_commandes: {
-        type: Array,
-        required: true,
-    },
-    desserts_commandes: {
-        type: Array,
-        required: true,
-    },
-    frais_livraison: {
-        type: Number,
-        required: true,
-    },
-    total: {
-        type: Number,
-        required: true,
-    },
+    foods_id: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Food'
+    }],
     temps_estime_livraison: {
         type: Number,
         required: true,
     },
     statut: {
         type: String,
-        required: true,
+        required: false,
     },
     livreur_id: {
         type: mongoose.Schema.Types.ObjectId,

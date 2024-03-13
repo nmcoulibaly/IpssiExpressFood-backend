@@ -3,6 +3,7 @@ const routerCommande = require('express').Router();
 
 routerCommande.get('', CommandeController.getCommandes);
 
-routerCommande.post('/addCommand', CommandeController.addCommande);
+routerCommande.post('/attributeCommand', CommandeController.attributeCommande);
+routerCommande.post('/addFoodToCommand', CommandeController.addFoodToCommande);
 
 module.exports = routerCommande;
