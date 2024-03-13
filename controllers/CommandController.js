@@ -1,44 +1,28 @@
-const mongoose = require('mongoose');
+const Commande = require('../models/Commandes');
 
-const CommandeSchema = new mongoose.Schema({
-    client_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-    },
-    plats_commandes: {
-        type: Array,
-        required: true,
-    },
-    desserts_commandes: {
-        type: Array,
-        required: true,
-    },
-    frais_livraison: {
-        type: Number,
-        required: true,
-    },
-    total: {
-        type: Number,  
-        required: true,
-    },
-    livreur_attribue: {
-        type: Boolean,
-        required: true,
-    },
-    temps_estime_livraison: {
-        type: Number,
-        required: true,
-    },
-    statut: {
-        type: Array,
-        required: true,
-    },
-    livreur_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-    },
-});
+const getCommandes = (req, res) => {
+    Commande.find()
+        .then(commandes => {
+            if (commandes.length > 0) {
+                res.status(200).json(commandes);
+                console.log(commandes);
+            } else {
+                res.status(404).json({ notFound: 'Aucune commande trouvée ' });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ error: err.message });
+        });
+}
+const getCommandesById = (req, res) => {
+    Commande.find({ "_id": req.params.id })
+        .then(commande => {
+            res.status(200).json(commande);
+            console.log(commande);
+        })
+        .catch(err => {
+            res.status(404).json({ notFound: 'Commande non trouvée ' });
+        });
+}
 
-module.exports = mongoose.model('Commande', CommandeSchema);
+module.exports = { getCommandes, getCommandesById, }
