@@ -18,7 +18,7 @@ const CommandeSchema = new mongoose.Schema({
         required: true,
     },
     total: {
-        type: Float32Array,
+        type: Number,
         required: true,
     },
     temps_estime_livraison: {
@@ -26,7 +26,7 @@ const CommandeSchema = new mongoose.Schema({
         required: true,
     },
     statut: {
-        type: Array,
+        type: String,
         required: true,
     },
     livreur_id: {
@@ -36,4 +36,4 @@ const CommandeSchema = new mongoose.Schema({
 
 })
 
-module.exports = Orders = mongoose.model("Orders", UserSchema, "Orders");
+module.exports = Orders = mongoose.model("Orders", CommandeSchema, "Orders");

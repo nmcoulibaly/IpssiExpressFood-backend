@@ -15,4 +15,4 @@ const LivreurSchema = new mongoose.Schema({
     }
 })
 
-module.exports = Livreurs = mongoose.model("Livreurs", UserSchema, "Livreurs");
+module.exports = Livreurs = mongoose.model("Livreurs", LivreurSchema, "Livreurs");
