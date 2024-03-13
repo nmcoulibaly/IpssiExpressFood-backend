@@ -14,6 +14,7 @@ const getCommandes = (req, res) => {
             res.status(500).json({ error: err.message });
         });
 }
+
 const getCommandesById = (req, res) => {
     Commande.find({ "_id": req.params.id })
         .then(commande => {

@@ -2,14 +2,14 @@ const express = require('express');
 const router = express.Router();
 const FoodController = require('../controllers/FoodController');
 
-router.post('/foods', FoodController.createFood);
+router.post('/', FoodController.createFood);
 
-router.get('/foods', FoodController.getAllFood);
+router.get('/', FoodController.getAllFood);
 
-router.get('/foods/:foodId', FoodController.getFoodById);
+router.get('/:foodId', FoodController.getFoodById);
 
-router.put('/foods/:foodId', FoodController.updateFood);
+router.put('/:foodId', FoodController.updateFood);
 
-router.delete('/foods/:foodId', FoodController.deleteFood);
+router.delete('/:foodId', FoodController.deleteFood);
 
 module.exports = router;
