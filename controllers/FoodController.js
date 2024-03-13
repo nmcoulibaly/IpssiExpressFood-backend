@@ -22,8 +22,8 @@ const createFood = async (req, res) => {
 
 const getAllFood = async (req, res) => {
     try {
-        const mainDishes = await Food.find({ type_food: "Plat principal" }).sort({ _id: -1 }).limit(2);
-        const desserts = await Food.find({ type_food: "Dessert" }).sort({ _id: -1 }).limit(2);
+        const mainDishes = await Food.find({ type_food: "plat" }).sort({ _id: -1 }).limit(2);
+        const desserts = await Food.find({ type_food: "dessert" }).sort({ _id: -1 }).limit(2);
 
         const allFood = [...mainDishes, ...desserts];
 

@@ -9,12 +9,12 @@ app.use(bodyParser.json())
 app.use(cors())
 app.use(express.json())
 
-// const routesProduct = require('./routes/ProductRoutes')
+const routesFood = require('./routes/FoodRoutes')
 const routesUser = require('./routes/UserRoutes')
 
 connect()
 
-// app.use('/products', routesProduct)
+app.use('/foods', routesFood)
 app.use('', routesUser)
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerConf));
 
