@@ -80,6 +80,20 @@ const getOrderUser = async (req, res) => {
         res.status(500).json({ message: "Erreur lors de la récupération des commandes de l'utilisateur" });
     }
 };
+const getOrderLivreur = async (req, res) => {
+    const userId = req.params.id;
+    try {
+        const user = await Livreur.find({ "user_id": userId });
+        if (!user) {
+            return res.status(404).json({ message: "Utilisateur non trouvé" });
+        }
+        const userOrder = await Commande.findOne({ livreur_id: { $ne: user._id } });
+        res.status(200).json(userOrder);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erreur lors de la récupération des commandes de l'utilisateur" });
+    }
+};
 
 
 const getUserById = (req, res) => {
@@ -105,4 +119,4 @@ const putUser = (req, res) => {
         });
 }
 
-module.exports = { loginUser, registerUser, getUsers, getUserById, putUser, getOrderUser };
+module.exports = { loginUser, registerUser, getUsers, getUserById, putUser, getOrderUser, getOrderLivreur };
