@@ -74,21 +74,6 @@ const getOrderUser = async (req, res) => {
 
         const userOrder = await Commande.findOne({ client_id: userId });
 
-        const livreur = await Livreur.findById(userOrder.livreur_id);
-        if (livreur) {
-            const statutLivreur = livreur.statut;
-            if (statutLivreur === "Disponible") {
-                // Mettre à jour le statut de la commande
-                order.statut = "En Cours";
-                await order.save();
-            }
-            if (statutLivreur === "Occupé") {
-                // Mettre à jour le statut de la commande
-                order.statut = "Livré";
-                await order.save();
-            }
-        }
-
         res.status(200).json(userOrder);
     } catch (error) {
         console.error(error);

@@ -15,7 +15,7 @@ const CommandeSchema = new mongoose.Schema({
     },
     statut: {
         type: String,
-        required: false,
+        default: "Pas encore Livré",
     },
     livreur_id: {
         type: mongoose.Schema.Types.ObjectId,
