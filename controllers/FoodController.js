@@ -42,6 +42,21 @@ const getAllFood = async (req, res) => {
     }
 };
 
+const getALLFood = async (req, res) => {
+     Food.find()
+        .then(foods => {
+            if (foods.length > 0) {
+                res.status(200).json(foods);
+                console.log(foods);
+            } else {
+                res.status(404).json({ notFound: 'Aucun food trouvé ' });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ error: err.message });
+        })
+};
+
 const getFoodById = async (req, res) => {
     const { foodId } = req.params;
 
@@ -96,4 +111,33 @@ const deleteFood = async (req, res) => {
     }
 };
 
-module.exports = { createFood, getAllFood, getFoodById, updateFood, deleteFood };
+const deleteFoodByAdmin = (req, res) => {
+
+    const id = req.params.id;
+
+    Food.findByIdAndRemove(id)
+        .then(food => {
+            res.status(200).json({ message: 'Produit supprimé!' })
+            console.log(food)
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({ error: 'Erreur de serveur' });
+        });
+}
+
+const putFoodByAdmin = (req, res) => {
+
+    const id = req.params.id;
+
+    Users.findOneAndUpdate({ _id: id }, req.body)
+        .then(user => {
+            res.status(200).json(user)
+            console.log(user)
+        })
+        .catch(err => {
+            res.status(404).json({ notFound: 'Produit non trouvé' })
+        })
+}
+
+module.exports = { createFood, getAllFood, getFoodById, updateFood, deleteFood, getALLFood, deleteFoodByAdmin, putFoodByAdmin };

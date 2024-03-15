@@ -132,4 +132,18 @@ const putUser = (req, res) => {
         });
 }
 
-module.exports = { loginUser, registerUser, getUsers, getUserById, putUser, getOrderUser, getOrderLivreur, getLivreuryId };
+const deleteUsers = (req, res) => {
+    const id = req.params.id;
+
+    Users.findByIdAndRemove(id)
+        .then(product => {
+            res.status(200).json({ message: 'Utilisateur supprimé!' })
+            console.log(product)
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({ error: 'Erreur de serveur' });
+        });
+}
+
+module.exports = { loginUser, registerUser, getUsers, getUserById, putUser, getOrderUser, getOrderLivreur, getLivreuryId, deleteUsers };

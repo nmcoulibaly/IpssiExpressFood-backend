@@ -13,6 +13,8 @@ routerUser.post('/user/register', UserController.registerUser);
 
 routerUser.put('/put/user/:id', UserController.putUser);
 
+routerUser.delete('/delete/user/:id', UserController.deleteUsers);
+
 routerUser.get('/user/get/order/:id', UserController.getOrderUser);
 
 routerUser.get('/livreur/get/order/:id', UserController.getOrderLivreur);
