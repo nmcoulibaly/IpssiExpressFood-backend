@@ -5,6 +5,8 @@ routerUser.get('/users', UserController.getUsers);
 
 routerUser.get('/users/:id', UserController.getUserById);
 
+routerUser.get('/livreurs/:id', UserController.getLivreuryId);
+
 routerUser.post('/user/login', UserController.loginUser);
 
 routerUser.post('/user/register', UserController.registerUser);

@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const port = 9000
+const port = 9002
 const app = express()
 const connect = require('./database/conn')
 const cors = require('cors')

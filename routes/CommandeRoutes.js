@@ -5,5 +5,6 @@ routerCommande.get('', CommandeController.getCommandes);
 
 routerCommande.post('/attributeCommand', CommandeController.attributeCommande);
 routerCommande.post('/addFoodToCommand', CommandeController.addFoodToCommande);
+routerCommande.delete('/delete/order/:id', CommandeController.deleteOrderUser);
 
 module.exports = routerCommande;

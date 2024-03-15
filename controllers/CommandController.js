@@ -20,7 +20,6 @@ const attributeCommande = async (req, res) => {
     try {
         const { _id } = req.body;
 
-        // Trouver tous les livreurs disponibles et les trier par position croissante
         const livreursDisponibles = await Livreur.find({ statut: 'Disponible' }).sort({ position: 1 });
 
         if (livreursDisponibles.length === 0) {
@@ -36,12 +35,13 @@ const attributeCommande = async (req, res) => {
         }
 
         commandeExistante.livreur_id = livreurAttribue._id;
+        commandeExistante.statut = "En cours";
         await commandeExistante.save();
 
         livreurAttribue.statut = 'occupé';
         await livreurAttribue.save();
 
-        res.status(200).json({ message: 'Commande attribuée au livreur!' });
+        res.status(200).json({ message: 'Commande attribuée au livreur!', livreurUserId: livreurAttribue.user_id });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -72,4 +72,30 @@ const addFoodToCommande = async (req, res) => {
     }
 };
 
-module.exports = { getCommandes, addFoodToCommande, attributeCommande }
+const deleteOrderUser = async (req, res) => {
+    const orderId = req.params.id;
+
+    try {
+        const deletedOrder = await Commande.findOneAndDelete({ _id: orderId });
+
+        if (!deletedOrder) {
+            return res.status(404).json({ notFound: 'Commande non trouvée' });
+        }
+
+        if (deletedOrder.livreur_id) {
+            await Livreur.findOneAndUpdate(
+                { _id: deletedOrder.livreur_id },
+                { $set: { statut: 'Disponible' } }
+            );
+        }
+
+        res.status(200).json({ message: 'Commande supprimée avec succès' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erreur lors de la suppression de la commande' });
+    }
+};
+
+
+
+module.exports = { getCommandes, addFoodToCommande, attributeCommande, deleteOrderUser }

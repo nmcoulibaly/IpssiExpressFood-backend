@@ -72,29 +72,30 @@ const getOrderUser = async (req, res) => {
             return res.status(404).json({ message: "Utilisateur non trouvé" });
         }
 
-        const userOrder = await Commande.findOne({ client_id: userId });
+        const userOrders = await Commande.find({ client_id: userId, statut: { $ne: "Livré" } });
 
-        res.status(200).json(userOrder);
+        res.status(200).json(userOrders);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Erreur lors de la récupération des commandes de l'utilisateur" });
     }
 };
+
 const getOrderLivreur = async (req, res) => {
     const userId = req.params.id;
     try {
-        const user = await Livreur.find({ "user_id": userId });
-        if (!user) {
+        const livreur = await Livreur.findOne({ "user_id": userId });
+        if (!livreur) {
             return res.status(404).json({ message: "Utilisateur non trouvé" });
         }
-        const userOrder = await Commande.findOne({ livreur_id: { $ne: user._id } });
+        const userOrder = await Commande.find({ livreur_id: livreur._id });
+
         res.status(200).json(userOrder);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Erreur lors de la récupération des commandes de l'utilisateur" });
     }
 };
-
 
 const getUserById = (req, res) => {
     Users.find({ "_id": req.params.id })
@@ -106,6 +107,18 @@ const getUserById = (req, res) => {
             res.status(404).json({ notFound: 'Utlisateur non trouvé' })
         })
 }
+
+const getLivreuryId = (req, res) => {
+    Livreur.find({ "_id": req.params.id })
+        .then(livreur => {
+            res.status(200).json(livreur);
+            console.log(livreur);
+        })
+        .catch(err => {
+            res.status(404).json({ notFound: 'Utlisateur non trouvé' })
+        })
+}
+
 const putUser = (req, res) => {
     const id = req.params.id;
 
@@ -119,4 +132,4 @@ const putUser = (req, res) => {
         });
 }
 
-module.exports = { loginUser, registerUser, getUsers, getUserById, putUser, getOrderUser, getOrderLivreur };
+module.exports = { loginUser, registerUser, getUsers, getUserById, putUser, getOrderUser, getOrderLivreur, getLivreuryId };
